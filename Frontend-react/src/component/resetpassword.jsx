@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react"
-import { Dashboard } from "./dashboard"
+import {useState } from "react"
 import axios from "axios"
+import { useLocation, useNavigate } from "react-router-dom"
 
 
 
 export const Resetpassword=()=>{
-      const [success,setsuccess]=useState(false)
+  const navigate=useNavigate()
+  const location=useLocation()
+  const {email}=location.state
       const [newpassword,setnewpassword]=useState({
         name:"newpass",
         password:""  
@@ -14,7 +16,6 @@ export const Resetpassword=()=>{
         name:"confirmnewpass",
         password:""
       })
-      const [token,settoken]=useState("")
       const [errors,seterrors]=useState({
         newpass:false,
         confirmnewpass:false,
@@ -46,28 +47,23 @@ export const Resetpassword=()=>{
       }
      
     try {
-         const response=await axios.post("http://localhost:5000/api/resetpassword",{newpass:newpassword.password,confirmnewpass:confirmnewpassword.password,Token:token})
-
-        setsuccess(response.data.success)
+         const response=await axios.post("http://localhost:5000/api/resetpassword",{newpass:newpassword.password,confirmnewpass:confirmnewpassword.password,email:email})
+              if(response.data.success){
+                  navigate("/sign-in")
+              }
     } catch (error) {
       console.log(error)
     }
     }
-useEffect(()=>{
-const queryParams=new URLSearchParams(window.location.search)
-const resettoken=queryParams.get("token")
-settoken(resettoken)
-},[])
 
 
 
 
 
-      return <>{success? <Dashboard str={"reset your password"}></Dashboard>:
-      <div className="resetpassworddiv">
+
+      return   <div className="resetpassworddiv">
       <h1>Reset password</h1>
-       <form action="reset"  onSubmit={handlesubmit} className="resetform">
-
+       <form onSubmit={handlesubmit} className="resetform">
       <input type="password" className={errors.newpass?"formerrorinput":"forminput"} name="newpass" value={newpassword.password} onChange={(event)=>{
         handlechange(event)
         seterrors(prev=>({...prev,[event.target.name]:false,["isnotsame"]:false}))
@@ -77,15 +73,11 @@ settoken(resettoken)
          handlechange(event)
          seterrors(prev=>({...prev,[event.target.name]:false,["isnotsame"]:false}))
       }} placeholder={errors.confirmnewpass?"❗Confirm New Password is required": errors.isnotsame? "❗ Passwords do not match":"Confirm New Password"} />
-
-
       <span>Minimum 8 characters with atleast one letter and one digit</span>
-      <button type="submit">Submit</button>
-       </form>
-      
+      <button className="outerlayerbutton" type="submit">Submit</button>
+       </form>    
       </div>
-        }
-      </>
 }
+
 
 

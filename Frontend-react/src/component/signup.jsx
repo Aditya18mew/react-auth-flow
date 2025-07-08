@@ -2,42 +2,51 @@ import { useState } from 'react'
 import './../App.css'
 import axios from 'axios'
 import { useFormdata } from './useFormdata'
-import { Dashboard } from './dashboard'
+import { Link } from 'react-router-dom'
+import { Spinner } from './buttons'
+import { Otpform } from './otpform'
 
 
 
- // eslint-disable-next-line react/prop-types
- export function Signup({onSwitch}) {
+
+ export function Signup() {
       const {formdata,handlechange}=useFormdata()
       const [signupsuccess,setsignupsuccess]=useState(false)
       const [errors,seterrors]=useState({
         email:false,
         password:false
     })
+    const [isloading,setisloading]=useState(false)
+
 
       async function submit(event){
         event.preventDefault()
+        setisloading(true)
         const newerrors={
             email:formdata.email.trim()==="",
             password:formdata.password.trim()===""
         }
         seterrors(newerrors)
-        if(errors.email || errors.password) return;
+        if(errors.email || errors.password){
+          setisloading(false)
+          return;
+        }
 
         try{
             const response=await axios.post("http://localhost:5000/api/signup",{email:formdata.email,password:formdata.password})
             setsignupsuccess(response.data.success)
         }catch(err){
             throw new Error(`there is in Error:${err}`)
-        }   
+        }finally{
+           setisloading(false)
+        }
       }
 
 
-  return <>{signupsuccess?<Dashboard str={"signed up"}></Dashboard>:
-      <div className='outerlayer'>
+  return  <>{signupsuccess ? <Otpform From={true} email={formdata.email}></Otpform> : <div className='outerlayer'>
           <h1 className='heading'>Sign up</h1>
           <p>Stay updated</p>
-          <form onSubmit={submit} action="/login" className='form'>
+          <form onSubmit={submit} className='form'>
               <input type="text" className={errors.email? "formerrorinput":"forminput"} value={formdata.email} onChange={(event)=>{
                 handlechange(event)
                 seterrors(prev=>({...prev,[event.target.name]:false}))
@@ -46,12 +55,10 @@ import { Dashboard } from './dashboard'
                 handlechange(event)
                 seterrors(prev=>({...prev,[event.target.name]:false}))
               }} name="password" id='password' placeholder={errors.password? "❗ Password is required" : "Create Password"}/>
+              <button className='outerlayerbutton' type="submit">{isloading ? <Spinner></Spinner> : "Sign up"}</button>
           </form>
-          <button onClick={submit}>Sign up</button>
-          <p className='differencecreatersignup'>or</p>
-          <div>Sign up with Google </div>
           <p className='signuptextsignup'>Already have an account?</p>
-          <button style={{marginTop:"40px"}} onClick={onSwitch} className='signin'>Sign in</button>
+          <Link className='outerlayerbutton' to="/sign-in" >Sign in</Link>
       </div>}
-      </>
+    </>
 }

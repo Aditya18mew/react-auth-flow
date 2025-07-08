@@ -1,17 +1,4 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: rgb(246, 242, 242);
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
 
 a {
   font-weight: 500;
@@ -22,12 +9,23 @@ a:hover {
   color: #535bf2;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
+html{
   min-height: 100vh;
+}
+
+body{
+  margin: 0;
+  width: 100%;
+   min-height: 100vh;
+}
+.cotainer{
+  width: 100%;
+ min-height: 100vh;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 h1 {
@@ -68,5 +66,291 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.spinner{
+  border-left: 2px solid white;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  animation: rotate 2s linear infinite;
+  box-shadow: 0 2px 4px rgba(255, 255,255, 0.1);
+}
+
+
+.outerlayer{
+  background-color: whitesmoke;
+  height:450px;
+  border:1px solid grey;
+  padding-left: 40px;
+  width: 350px;
+  color: black;
+  display: flex;
+  flex-flow: column;
+ align-items: flex-start;
+ border-radius: 20px;
+ position: relative;
+}
+
+
+.homepage{
+  background-color: whitesmoke;
+  height:300px ;
+  border:1px solid grey;
+  width: 300px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  color: black;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+ justify-content: flex-start;
+ border-radius: 20px;
+}
+.homepage h1{
+font-size: 2.5rem;
+color: #4CAF50;
+margin-bottom: 20px;
+
+}
+.homepage p{
+font-size: 1.1rem;
+color: #555;
+margin-bottom: 30px;
+
+}
+.homepage .icon {
+  font-size: 50px;
+  color: #4CAF50;
+  margin-bottom: 20px;
+}
+.homepage button{
+border: none;
+padding: 12px 5px;
+font-size: 1.1rem;
+cursor: pointer;
+transition: background-color 0.3s ease;
+
+}
+.homepage button:hover{
+  transform: scale(1.02);
+}
+.homepage button:active{
+  transform: scale(0.98);
+}
+
+
+
+.heading{
+margin-bottom: 0;
+font-size: 2.5rem;
+}
+
+
+.form{
+  display: flex;
+  flex-flow: column;
+  gap: 1.2rem;
+}
+.resetform{
+  display: flex;
+  flex-direction: column;
+align-items: center;
+margin-top: 20px;
+gap: 10px;
+}
+
+.resetform span::before{
+  content: "• ";
+  color: rgb(19, 138, 19);
+  font-size: 1rem;
+  text-align: center;
+}
+.resetform span{
+  font-size: small;
+  color: gray
+}
+
+
+.forminput{
+  width: 300px;
+  height: 30px;
+  background-color: white;
+    border: 1px solid grey;
+    padding: 4px;
+    font-size: 1rem;
+    border-radius: 10px;
+    color: black;
+    outline: none;
+}
+
+.formerrorinput{
+  width: 300px;
+  height: 30px;
+  background-color: white;
+    border: 1px solid red;
+    padding: 4px;
+    font-size: 1rem;
+    border-radius: 10px;
+    color: black;
+    outline: none;
+}
+
+.formLink{
+  width: 100%;
+  text-align: start;
+  margin-top: -8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.formLink:hover{
+  color: rgb(87, 71, 227);
+
+}
+.formLink:active{
+  color: rgb(87, 71, 227);
+ transform: scale(0.99);
+}
+
+.formerrorinput:focus{
+  box-shadow:0 0 5px rgba(255, 0, 0, 0.4);
+  ;
+}
+
+.forminput:focus{
+box-shadow: 0 2px 5px rgba(0, 123, 255, 0.5);
+}
+.forminput:focus::placeholder{
+opacity: 0;
+}
+
+.forgetpassworddiv{
+  background-color: whitesmoke;
+  height:320px;
+  border:1px solid grey;
+  width: 350px;
+  padding-left: 40px;
+  color: black;
+  display: flex;
+  flex-direction: column;
+   border-radius: 20px;
+ align-items: flex-start;
+}
+
+.forgetform{
+  margin-top: 40px;
+  margin-bottom: 15px;
+}
+
+
+
+.resetpassworddiv{
+  background-color: whitesmoke;
+  height:300px;
+  border:1px solid grey;
+  padding: 2px;
+  padding-right: 4px;
+  width: 400px;
+  color: black;
+  display: flex;
+  flex-flow: column;
+align-items: center;
+ border-radius: 20px;
+}
+.resetpassworddiv h1{
+  align-self: self-start;
+   font-size: 1.5rem;
+  margin-bottom: 2px;
+  margin-left: 40px;
+}
+
+.forgetpassworddiv h1{
+  font-size: 1.5rem;
+  margin-bottom: 2px;
+}
+.forgetpassworddiv p{
+  margin:4px 0;
+  color: gray;
+}
+
+.forgetpassworddiv input {
+   margin-bottom: 15px;
+}
+
+.resetpassworddiv input{
+ margin-bottom: 5px;
+}
+
+
+.outerlayerbutton{
+  border: 1px solid grey;
+  width: 300px;
+  height: 40px;
+  color: white;
+  background-color: #121212;
+  margin-top: 2px;
+  margin-bottom: 2px;
+ border-top-left-radius: 18px;
+ border-top-right-radius: 18px;
+ border-bottom-left-radius: 18px;
+ border-bottom-right-radius: 18px;
+ 
+font-size: 1rem;
+display: flex;
+justify-content: center;
+align-items: center;
+transition: all 0.3s ease-in-out; 
+}
+
+.outerlayerbutton:hover{
+transform: scale(1.01);
+}
+.outerlayerbutton:active{
+transform: scale(0.91);
+}
+
+
+.signuptext{
+width: 90%;
+text-align: center;
+font-size: 1rem;
+}
+.signuptextsignup{
+width: 90%;
+text-align: center;
+font-size: 1rem;
+}
+
+.otpdiv{
+   background-color: whitesmoke;
+  height:300px;
+  border:1px solid grey;
+  width: 350px;
+  padding-left: 30px;
+  color: black;
+  display: flex;
+  flex-direction: column;
+   border-radius: 20px;
+ align-items: flex-start;
+}
+
+.otpdiv h1{
+  font-size: 1.5rem;
+  margin-bottom: 2px;
+}
+.otpdiv p{
+  margin:4px 0;
+  color: gray;
+}
+
+.otpdiv form{
+  display: flex;
+  flex-direction: column;
+align-items: center;
+margin-top: 40px;
+gap: 20px;
+}
+
+
+
 
 

@@ -5,12 +5,20 @@ const userSchema = new mongoose.Schema({
     id:String,
     Email:String,
     Password:String,
-    ResetToken:String,
-    TokenExpiry:Date,
+    otp:String,
+    RefreshToken:String,
+    CreatedAt:Date,
+    ExpiredAt:Date,
 })
 
+const unverifieduserschema=mongoose.Schema({
+    Email:String,
+    Password:String,
+    otp:String
+})
 
-const user=mongoose.model("user",userSchema)
+const User=mongoose.model("user",userSchema)
+const unverifiedUser=mongoose.model("unverifieduser",unverifieduserschema)
 
 
 const connectdb= async ()=>{
@@ -22,12 +30,31 @@ const connectdb= async ()=>{
   }
 }
 
+async function verifyotp(email,otp){
+    try{
+     const user=await unverifiedUser.findOne({"Email":email})
+     if(user.otp===otp){
+         const newuser=new User({
+        Email:user.Email,
+        Password:user.Password,
+       })
+       await newuser.save()
+       await unverifiedUser.findByIdAndDelete(user._id)
+        return true
+     }else{
+        return false
+     }
+    }catch(err){
+        console.log(err)
+    }
+}
 
 
 
 
 
-module.exports={connectdb,user}
 
+
+module.exports={verifyotp,unverifiedUser,connectdb,User}
 
 

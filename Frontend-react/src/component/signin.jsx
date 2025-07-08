@@ -2,43 +2,52 @@ import { useState } from 'react'
 import './../App.css'
 import axios from 'axios'
 import { useFormdata } from './useFormdata'
-import { Forgetpassword } from './forget password'
-import { Dashboard } from './dashboard'
+import { Link, useNavigate } from 'react-router-dom'
+import { Spinner } from './buttons'
 
- // eslint-disable-next-line react/prop-types
- export function Signin({onSwitch}) {
+
+
+
+ export function Signin() {
     const {formdata,handlechange}=useFormdata()
-    const [signinsuccess,setsigninsuccess]=useState(false)
-    const [forgot,setforgot]=useState(false)
+    const navigate=useNavigate()
     const [errors,seterrors]=useState({
         email:false,
         password:false
     })
+    const [isloading,setisloading]=useState(false)
 
     async function submit(event){
         event.preventDefault()
+        setisloading(true)
         const newerrors={
             email:formdata.email.trim()==="",
             password:formdata.password.trim()===""
         }
         seterrors(newerrors)
-        if(errors.email || errors.password) return;
+        if(errors.email || errors.password){
+            setisloading(false)
+             return;
+        }
 
         try{
-            const response= await axios.post("http://localhost:5000/api/signin",{email:formdata.email,password:formdata.password})
-            const {accesstoken,success}=response.data
-            setsigninsuccess(success)
-            localStorage.setItem("jwt token",accesstoken)
+            const response= await axios.post("http://localhost:5000/api/signin",{email:formdata.email,password:formdata.password},{
+                withCredentials:true
+            })
+            if(response.data.success){
+                 navigate("/home")
+            }
         }catch(err){
             throw new Error(`there is in Error:${err}`)
+        }finally{
+            setisloading(false)
         }
     }
 
-  return <>{forgot?<Forgetpassword></Forgetpassword>:<>{signinsuccess?<Dashboard   str={"signed in"}></Dashboard>:
-    <div className='outerlayer'>
+  return   <div className='outerlayer'>
         <h1 className='heading'>Sign in</h1>
         <p>Stay updated</p>
-        <form onSubmit={submit} action="/login" className='form'>
+        <form onSubmit={submit} className='form'>
             <input type='email' className={errors.email? "formerrorinput":"forminput"} value={formdata.email} onChange={(event)=>{
                 handlechange(event)
                 seterrors(prev=>({...prev,[event.target.name]:false}))
@@ -47,14 +56,10 @@ import { Dashboard } from './dashboard'
                 handlechange(event)
                 seterrors(prev=>({...prev,[event.target.name]:false}))
             }} name="password" id='password' placeholder={errors.password? "❗ Password is required" : "Password"} />
+             <Link className='formLink' to="/forget-password">Forgot password?</Link>
+             <button className='outerlayerbutton' type="submit">{isloading ? <Spinner></Spinner> : "Sign in"}</button>
         </form>
-        <a onClick={()=>{
-          setforgot(true)
-        }}>Forgot password?</a>
-        <button onClick={submit}>Sign in</button>
-        <p className='differencecreater'>or</p>
-        <div>Sign in with Google </div>
         <p className='signuptext'>Don,t have an account?</p>
-        <button style={{marginTop:"40px"}} onClick={onSwitch}  className='signup'>Sign up</button>
-    </div>}</>}</>
+        <Link className='outerlayerbutton' to="/sign-up" >Sign up</Link>
+    </div>
 }
